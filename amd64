@@ -1,5 +1,4 @@
 #!/data/data/com.termux/files/usr/bin/bash
-pkg update -y && pkg upgrade -y && pkg install wget proot tar pv p7zip -y
 chroot=ubuntu-fs64
 if [ -d "$chroot" ]; then
 	a=1
