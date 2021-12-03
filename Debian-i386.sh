@@ -11,17 +11,17 @@ if [ "$a" != 1 ];then
 		echo "Dang tai ve...."
 		case `dpkg --print-architecture` in
 		aarch64)
-			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-i386-static;
+			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin ;;
 		arm)
-			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-i386-static;
+			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin/ ;;
 		*)
 			;;
 		esac
-		wget -O $khanh https://github.com/KhanhNguyen9872/Ubuntu_i386_amd64/releases/download/debianrootfs/debian-rootfs-i386.tar.xz
+		wget -O $khanh https://github.com/KhanhNguyen9872/Debian_i386_amd64/releases/download/debianrootfs/debian-rootfs-i386.tar.xz
 	fi
 	cur=`pwd`
 	mkdir -p "$chroot"
@@ -31,7 +31,7 @@ if [ "$a" != 1 ];then
 	cd "$cur"
 fi
 mkdir -p debian-binds
-LAUNCHER=start-ubuntu.sh
+LAUNCHER=debian.sh
 cat > $LAUNCHER <<- EOM
 #!/bin/bash
 cd \$(dirname \$0)
@@ -71,7 +71,8 @@ fi
 EOM
 
 termux-fix-shebang $LAUNCHER
-cd
-chmod +x $khanh
+mv $LAUNCHER ${PREFIX}/bin/debian
+chmod 777 ${PREFIX}/bin/debian
+cd 2> /dev/null
 rm -f $khanh
 echo "You can now launch Debian with the ./${bin} script"
