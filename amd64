@@ -1,22 +1,27 @@
 #!/data/data/com.termux/files/usr/bin/bash
-chroot=ubuntu-fs64
-if [ -d "$chroot" ]; then
-	a=1
+chroot=ubuntu-fs64 2> /dev/null
+clear
+if [ -d "$chroot" ] 2> /dev/null; then
+	a=1 2> /dev/null
 	echo "Skip Download!"
 fi
-khanh="debian-rootfs.tar.xz"
-if [ "$a" != 1 ];then
-	if [ ! -f $khanh ]; then
+khanh="debian-rootfs.tar.xz" 2> /dev/null
+if [ "$a" != 1 ] 2> /dev/null;then
+	if [ ! -f $khanh ] 2> /dev/null; then
+		echo ""
 		echo "Dang tai ve....."
+		echo ""
 		case `dpkg --print-architecture` in
 		aarch64)
-			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-x86_64-static 2> /dev/null;
-			chmod 777 qemu-x86_64-static;
-			mv qemu-x86_64-static ~/../usr/bin ;;
+			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-x86_64-static 2> /dev/null
+			chmod 777 qemu-x86_64-static 2> /dev/null
+			mv qemu-x86_64-static ${PREFIX}/bin/ 2> /dev/null
+			;;
 		arm)
-			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm/qemu-x86_64-static 2> /dev/null;
-			chmod 777 qemu-x86_64-static;
-			mv qemu-x86_64-static ~/../usr/bin/ ;;
+			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm/qemu-x86_64-static 2> /dev/null
+			chmod 777 qemu-x86_64-static 2> /dev/null
+			mv qemu-x86_64-static ${PREFIX}/bin/ 2> /dev/null
+			;;
 		*)
 			;;
 		esac
@@ -28,6 +33,7 @@ if [ "$a" != 1 ];then
 	clear
 	echo ""
 	echo "Dang cai dat...."
+	echo ""
 	proot --link2symlink tar -xJf ${cur}/${khanh}||:
 	cd "$cur"
 fi
@@ -74,4 +80,6 @@ mv $LAUNCHER ${PREFIX}/bin/debian
 chmod 777 ${PREFIX}/bin/debian
 cd 2> /dev/null
 rm -f $khanh
-echo "You can now launch Debian with the ./${LAUNCHER} script"
+echo "You can now launch Debian with 'debian' command!"
+echo ""
+exit 0
