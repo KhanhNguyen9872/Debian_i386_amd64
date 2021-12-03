@@ -1,49 +1,40 @@
 #!/data/data/com.termux/files/usr/bin/bash
-pkg install proot -y
-folder=ubuntu-fs
-if [ -d "$folder" ]; then
-	first=1
+pkg update -y && pkg upgrade -y && pkg install wget proot tar pv p7zip -y
+chroot=debian-fs
+if [ -d "$chroot" ]; then
+	a=1
 	echo "Skip Download!"
 fi
-tarball="ubuntu-rootfs.tar.xz"
-if [ "$first" != 1 ];then
-	if [ ! -f $tarball ]; then
+khanh="debian-rootfs.tar.xz"
+if [ "$a" != 1 ];then
+	if [ ! -f $khanh ]; then
 		echo "Dang tai ve...."
 		case `dpkg --print-architecture` in
 		aarch64)
-			archurl="i386";
+			arch="i386";
 			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin ;;
 		arm)
-			archurl="i386";
+			arch="i386";
 			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin/ ;;
-		amd64)
-			archurl="amd64" ;;
-		x86_64)
-			archurl="amd64" ;;	
-		i*86)
-			archurl="i386" ;;
-		x86)
-			archurl="i386" ;;
 		*)
-			echo "unknown architecture"; exit 1 ;;
+			arch="i386";;
 		esac
-		wget "https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Rootfs/Ubuntu/${archurl}/ubuntu-rootfs-${archurl}.tar.xz" -O $tarball
+		wget -O $khanh "https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Rootfs/Ubuntu/${arch}/ubuntu-rootfs-${arch}.tar.xz"
 	fi
 	cur=`pwd`
-	mkdir -p "$folder"
-	cd "$folder"
-	echo "Decompressing Rootfs, please be patient."
-	proot --link2symlink tar -xJf ${cur}/${tarball}||:
+	mkdir -p "$chroot"
+	cd "$chroot"
+	echo "Dang cai dat....."
+	proot --link2symlink tar -xJf ${cur}/${khanh}||:
 	cd "$cur"
 fi
-mkdir -p ubuntu-binds
-bin=start-ubuntu.sh
-echo "writing launch script"
-cat > $bin <<- EOM
+mkdir -p debian-binds
+LAUNCHER=start-ubuntu.sh
+cat > $LAUNCHER <<- EOM
 #!/bin/bash
 cd \$(dirname \$0)
 ## unset LD_PRELOAD in case termux-exec is installed
@@ -81,10 +72,8 @@ else
 fi
 EOM
 
-echo "fixing shebang of $bin"
-termux-fix-shebang $bin
-echo "making $bin executable"
-chmod +x $bin
-echo "removing image for some space"
-rm $tarball
+termux-fix-shebang $LAUNCHER
+cd
+chmod +x $khanh
+rm -f $khanh
 echo "You can now launch Debian with the ./${bin} script"
