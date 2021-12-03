@@ -3,21 +3,21 @@ pkg install proot -y
 folder=ubuntu-fs
 if [ -d "$folder" ]; then
 	first=1
-	echo "skipping downloading"
+	echo "Skip Download!"
 fi
 tarball="ubuntu-rootfs.tar.xz"
 if [ "$first" != 1 ];then
 	if [ ! -f $tarball ]; then
-		echo "Download Rootfs, this may take a while base on your internet speed."
+		echo "Dang tai ve...."
 		case `dpkg --print-architecture` in
 		aarch64)
 			archurl="i386";
-			wget https://github.com/AllPlatform/Termux-UbuntuX86_64/raw/master/arm64/qemu-i386-static;
+			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin ;;
 		arm)
 			archurl="i386";
-			wget https://github.com/AllPlatform/Termux-UbuntuX86_64/raw/master/arm/qemu-i386-static;
+			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin/ ;;
 		amd64)
@@ -54,6 +54,13 @@ command+=" -0"
 command+=" -r $folder -q qemu-i386-static"
 command+=" -b /dev"
 command+=" -b /proc"
+command+=" -b /sdcard"
+command+=" -b /vendor"
+command+=" -b /system"
+command+=" -b /data"
+command+=" -b /mnt"
+command+=" -b /storage"
+command+=" -b /product"
 command+=" -b ubuntu-fs/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
