@@ -1,37 +1,37 @@
 #!/data/data/com.termux/files/usr/bin/bash
-pkg install proot -y
+pkg update -y && pkg upgrade -y && pkg install wget proot tar pv p7zip -y
 chroot=ubuntu-fs64
 if [ -d "$chroot" ]; then
 	a=1
 	echo "Skip Download!"
 fi
-khanh="ubuntu-rootfs.tar.xz"
+khanh="debian-rootfs.tar.xz"
 if [ "$a" != 1 ];then
 	if [ ! -f $tarball ]; then
 		echo "Dang tai ve....."
 		case `dpkg --print-architecture` in
 		aarch64)
-			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-x86_64-static;
+			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-x86_64-static;
 			chmod 777 qemu-x86_64-static;
 			mv qemu-x86_64-static ~/../usr/bin ;;
 		arm)
-			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-x86_64-static;
+			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm/qemu-x86_64-static;
 			chmod 777 qemu-x86_64-static;
 			mv qemu-x86_64-static ~/../usr/bin/ ;;
 		*)
 			;;
 		esac
-		wget -O $khanh https://github.com/KhanhNguyen9872/Ubuntu_i386_amd64/releases/download/debianrootfs/debian-rootfs-amd64.tar.xz
+		wget -O $khanh https://github.com/KhanhNguyen9872/Debian_i386_amd64/releases/download/debianrootfs/debian-rootfs-amd64.tar.xz
 	fi
 	cur=`pwd`
 	mkdir -p "$chroot"
 	cd "$chroot"
 	echo "Dang cai dat...."
-	proot --link2symlink tar -xJf ${cur}/${tarball}||:
+	proot --link2symlink tar -xJf ${cur}/${khanh}||:
 	cd "$cur"
 fi
 mkdir -p debian-binds
-LAUNCHER=debian
+LAUNCHER=debian.sh
 cat > $LAUNCHER <<- EOM
 #!/bin/bash
 cd \$(dirname \$0)
@@ -71,7 +71,8 @@ fi
 EOM
 
 termux-fix-shebang $LAUNCHER
-chmod +x $LAUNCHER
+mv $LAUNCHER ${PREFIX}/bin/debian
+chmod 777 ${PREFIX}/bin/debian
 cd 2> /dev/null
 rm -f $khanh
 echo "You can now launch Debian with the ./${LAUNCHER} script"
