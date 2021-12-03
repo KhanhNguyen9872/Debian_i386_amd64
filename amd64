@@ -41,7 +41,7 @@ mkdir -p debian-binds
 LAUNCHER=debian.sh
 cat > $LAUNCHER <<- EOM
 #!/bin/bash
-cd \$(dirname \$0)
+cd
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
 command="proot"
