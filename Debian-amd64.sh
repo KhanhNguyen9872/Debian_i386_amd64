@@ -7,7 +7,7 @@ if [ -d "$chroot" ]; then
 fi
 khanh="debian-rootfs.tar.xz"
 if [ "$a" != 1 ];then
-	if [ ! -f $tarball ]; then
+	if [ ! -f $khanh ]; then
 		echo "Dang tai ve....."
 		case `dpkg --print-architecture` in
 		aarch64)
