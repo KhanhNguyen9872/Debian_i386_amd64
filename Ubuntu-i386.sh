@@ -11,19 +11,17 @@ if [ "$a" != 1 ];then
 		echo "Dang tai ve...."
 		case `dpkg --print-architecture` in
 		aarch64)
-			arch="i386";
 			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin ;;
 		arm)
-			arch="i386";
 			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-i386-static;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin/ ;;
 		*)
-			arch="i386";;
+			;;
 		esac
-		wget -O $khanh "https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Rootfs/Ubuntu/${arch}/ubuntu-rootfs-${arch}.tar.xz"
+		wget -O $khanh https://github.com/KhanhNguyen9872/Ubuntu_i386_amd64/releases/download/debianrootfs/debian-rootfs-i386.tar.xz
 	fi
 	cur=`pwd`
 	mkdir -p "$chroot"
