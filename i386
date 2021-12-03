@@ -1,5 +1,4 @@
 #!/data/data/com.termux/files/usr/bin/bash
-pkg update -y && pkg upgrade -y && pkg install wget proot tar pv p7zip -y
 chroot=debian-fs
 if [ -d "$chroot" ]; then
 	a=1
