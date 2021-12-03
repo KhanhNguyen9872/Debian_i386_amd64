@@ -11,11 +11,11 @@ if [ "$a" != 1 ];then
 		echo "Dang tai ve...."
 		case `dpkg --print-architecture` in
 		aarch64)
-			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-i386-static;
+			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-i386-static 2> /dev/null;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin ;;
 		arm)
-			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm/qemu-i386-static;
+			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm/qemu-i386-static 2> /dev/null;
 			chmod 777 qemu-i386-static;
 			mv qemu-i386-static ~/../usr/bin/ ;;
 		*)
@@ -26,6 +26,8 @@ if [ "$a" != 1 ];then
 	cur=`pwd`
 	mkdir -p "$chroot"
 	cd "$chroot"
+	clear
+	echo ""
 	echo "Dang cai dat....."
 	proot --link2symlink tar -xJf ${cur}/${khanh}||:
 	cd "$cur"
