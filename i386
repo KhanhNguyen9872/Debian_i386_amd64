@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-chroot=debian-fs 2> /dev/null
+chroot=debian-fs
 clear
 if [ -d "$chroot" ] 2> /dev/null; then
 	a=1 2> /dev/null
@@ -57,7 +57,7 @@ command+=" -b /data"
 command+=" -b /mnt"
 command+=" -b /storage"
 command+=" -b /product"
-command+=" -b ubuntu-fs/root:/dev/shm"
+command+=" -b debian-fs/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 command+=" -w /root"
