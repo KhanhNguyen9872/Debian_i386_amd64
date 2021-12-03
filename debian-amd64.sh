@@ -1,4 +1,4 @@
-#kali_arm64_khanhnguyen9872
+#debian_amd64_khanhnguyen9872
 termux-wake-lock
 echo "termux-wake-lock" > ~/.bash_profile
 pkg update -y && pkg upgrade -y && pkg install wget proot tar pv p7zip -y
