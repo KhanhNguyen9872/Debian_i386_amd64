@@ -1,49 +1,38 @@
 #!/data/data/com.termux/files/usr/bin/bash
 pkg install proot -y
-folder=ubuntu-fs64
-if [ -d "$folder" ]; then
-	first=1
+chroot=ubuntu-fs64
+if [ -d "$chroot" ]; then
+	a=1
 	echo "Skip Download!"
 fi
-tarball="ubuntu-rootfs.tar.xz"
-if [ "$first" != 1 ];then
+khanh="ubuntu-rootfs.tar.xz"
+if [ "$a" != 1 ];then
 	if [ ! -f $tarball ]; then
 		echo "Dang tai ve....."
 		case `dpkg --print-architecture` in
 		aarch64)
-			archurl="amd64";
 			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-x86_64-static;
 			chmod 777 qemu-x86_64-static;
 			mv qemu-x86_64-static ~/../usr/bin ;;
 		arm)
-			archurl="amd64";
 			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-x86_64-static;
 			chmod 777 qemu-x86_64-static;
 			mv qemu-x86_64-static ~/../usr/bin/ ;;
-		amd64)
-			archurl="amd64" ;;
-		x86_64)
-			archurl="amd64" ;;	
-		i*86)
-			archurl="i386" ;;
-		x86)
-			archurl="i386" ;;
 		*)
-			echo "unknown architecture"; exit 1 ;;
+			;;
 		esac
-		wget "https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Rootfs/Ubuntu/${archurl}/ubuntu-rootfs-${archurl}.tar.xz" -O $tarball
+		wget -O $khanh https://github.com/KhanhNguyen9872/Ubuntu_i386_amd64/releases/download/debianrootfs/debian-rootfs-amd64.tar.xz
 	fi
 	cur=`pwd`
-	mkdir -p "$folder"
-	cd "$folder"
+	mkdir -p "$chroot"
+	cd "$chroot"
 	echo "Dang cai dat...."
 	proot --link2symlink tar -xJf ${cur}/${tarball}||:
 	cd "$cur"
 fi
-mkdir -p ubuntu-binds
-bin=start-ubuntu64.sh
-echo "writing launch script"
-cat > $bin <<- EOM
+mkdir -p debian-binds
+LAUNCHER=debian
+cat > $LAUNCHER <<- EOM
 #!/bin/bash
 cd \$(dirname \$0)
 ## unset LD_PRELOAD in case termux-exec is installed
@@ -81,10 +70,8 @@ else
 fi
 EOM
 
-echo "fixing shebang of $bin"
-termux-fix-shebang $bin
-echo "making $bin executable"
-chmod +x $bin
-echo "removing image for some space"
-rm $tarball
-echo "You can now launch Debian with the ./${bin} script"
+termux-fix-shebang $LAUNCHER
+chmod +x $LAUNCHER
+cd 2> /dev/null
+rm -f $khanh
+echo "You can now launch Debian with the ./${LAUNCHER} script"
