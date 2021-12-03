@@ -3,21 +3,21 @@ pkg install proot -y
 folder=ubuntu-fs64
 if [ -d "$folder" ]; then
 	first=1
-	echo "skipping downloading"
+	echo "Skip Download!"
 fi
 tarball="ubuntu-rootfs.tar.xz"
 if [ "$first" != 1 ];then
 	if [ ! -f $tarball ]; then
-		echo "Download Rootfs, this may take a while base on your internet speed."
+		echo "Dang tai ve....."
 		case `dpkg --print-architecture` in
 		aarch64)
 			archurl="amd64";
-			wget https://github.com/AllPlatform/Termux-UbuntuX86_64/raw/master/arm64/qemu-x86_64-static;
+			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm64/qemu-x86_64-static;
 			chmod 777 qemu-x86_64-static;
 			mv qemu-x86_64-static ~/../usr/bin ;;
 		arm)
 			archurl="amd64";
-			wget https://github.com/AllPlatform/Termux-UbuntuX86_64/raw/master/arm/qemu-x86_64-static;
+			wget -O qemu-x86_64-static https://raw.githubusercontent.com/KhanhNguyen9872/Ubuntu_i386_amd64/main/arm/qemu-x86_64-static;
 			chmod 777 qemu-x86_64-static;
 			mv qemu-x86_64-static ~/../usr/bin/ ;;
 		amd64)
@@ -36,7 +36,7 @@ if [ "$first" != 1 ];then
 	cur=`pwd`
 	mkdir -p "$folder"
 	cd "$folder"
-	echo "Decompressing Rootfs, please be patient."
+	echo "Dang cai dat...."
 	proot --link2symlink tar -xJf ${cur}/${tarball}||:
 	cd "$cur"
 fi
@@ -54,6 +54,13 @@ command+=" -0"
 command+=" -r $folder -q qemu-x86_64-static"
 command+=" -b /dev"
 command+=" -b /proc"
+command+=" -b /sdcard"
+command+=" -b /vendor"
+command+=" -b /system"
+command+=" -b /data"
+command+=" -b /mnt"
+command+=" -b /storage"
+command+=" -b /product"
 command+=" -b ubuntu-fs64/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
