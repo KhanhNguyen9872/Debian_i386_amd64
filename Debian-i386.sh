@@ -42,7 +42,7 @@ unset LD_PRELOAD
 command="proot"
 command+=" --link2symlink"
 command+=" -0"
-command+=" -r $folder -q qemu-i386-static"
+command+=" -r $chroot -q qemu-i386-static"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sdcard"
@@ -55,8 +55,6 @@ command+=" -b /product"
 command+=" -b ubuntu-fs/root:/dev/shm"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
-## uncomment the following line to mount /sdcard directly to / 
-#command+=" -b /sdcard"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
 command+=" HOME=/root"
