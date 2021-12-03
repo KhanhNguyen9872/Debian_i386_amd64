@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 chroot=debian-fs
+clear
 if [ -d "$chroot" ]; then
 	a=1
 	echo "Skip Download!"
@@ -7,7 +8,9 @@ fi
 khanh="debian-rootfs.tar.xz"
 if [ "$a" != 1 ];then
 	if [ ! -f $khanh ]; then
+		echo ""
 		echo "Dang tai ve...."
+		echo ""
 		case `dpkg --print-architecture` in
 		aarch64)
 			wget -O qemu-i386-static https://raw.githubusercontent.com/KhanhNguyen9872/Debian_i386_amd64/main/arm64/qemu-i386-static 2> /dev/null;
@@ -28,6 +31,7 @@ if [ "$a" != 1 ];then
 	clear
 	echo ""
 	echo "Dang cai dat....."
+	echo ""
 	proot --link2symlink tar -xJf ${cur}/${khanh}||:
 	cd "$cur"
 fi
