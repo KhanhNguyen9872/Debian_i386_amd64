@@ -34,7 +34,7 @@ if [ "$a" != 1 ] 2> /dev/null;then
 	echo ""
 	echo "Dang cai dat....."
 	echo ""
-	proot --link2symlink tar -xJf ${cur}/${khanh}||:
+	proot --link2symlink tar -xJf ${cur}/${khanh} 2> /dev/null || :
 	cd "$cur"
 fi
 mkdir -p debian-binds
