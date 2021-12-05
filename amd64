@@ -27,17 +27,13 @@ if [ "$a" != 1 ] 2> /dev/null;then
 		esac
 		wget -O $khanh https://github.com/KhanhNguyen9872/Debian_i386_amd64/releases/download/debianrootfs/debian-rootfs-amd64.tar.xz
 	fi
-	cur=`pwd`
-	mkdir -p "$chroot"
-	cd "$chroot"
+	cd
 	clear
 	echo ""
 	echo "Dang cai dat...."
 	echo ""
-	proot --link2symlink tar -xJf ${cur}/${khanh}||:
-	cd "$cur"
+	proot --link2symlink tar -xJf ${khanh}||:
 fi
-mkdir -p debian-binds
 LAUNCHER=debian.sh
 cat > $LAUNCHER <<- EOM
 #!/bin/bash
